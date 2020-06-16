@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+                           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd">
+                                  
+	<!-- ======================== -->
+	<!-- Persistent Unit Padrao   -->
+	<!-- ======================== -->
+	<bean id="defaultPersistentUnitName" class="java.lang.String">
+		<constructor-arg value="manager1" />
+	</bean>
+
+	<!-- ======================================== -->
+	<!-- Local onde encontra-se o persistence.xml -->
+	<!-- ======================================== -->
+	<util:list id="persistentXmlPaths">
+		<value>${jpa.persistence.config.file}</value>
+	</util:list>
+	
+
+	<!-- ============================================== -->
+	<!-- Cada Data Source deve ser registrado neste map -->
+	<!-- ============================================== -->
+	<util:map id="dataSources">
+		<entry key="datasource1">
+			<ref bean="datasource1" />
+		</entry>
+	</util:map>
+
+
+	<!-- ================ -->
+	<!-- Entity Manager 1 -->
+	<!-- ================ -->
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+		autowire-candidate="default">
+		<property name="persistenceUnitManager" ref="persistenceUnitManager" />
+		<property name="persistenceUnitName" value="manager1" />
+	</bean>
+	
+	<bean id="persistenceUnitManager" class="org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager">
+    	<property name="persistenceXmlLocations" ref="persistentXmlPaths" />
+    	<property name="dataSources"  ref="dataSources"/>
+	</bean>
+
+    <!-- ============================ -->
+    <!-- Data Source Entity Manager 1 -->
+    <!-- ============================ -->
+    <jee:jndi-lookup id="datasource1" jndi-name="jdbc/XX"/>
+
+</beans>

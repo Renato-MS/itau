@@ -1,0 +1,28 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+                           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd">
+
+    <!-- =========================================================================================================== -->
+    <!-- Clientes Web Service                                                                                      -->
+    <!-- =========================================================================================================== -->
+    
+     <bean id="exampleService" class="org.springframework.remoting.jaxws.JaxWsPortProxyFactoryBean">										 
+        <property name="serviceInterface" value="com.altec.bsbr.app.example.service.SituacaoWebService"/>
+        <property name="wsdlDocumentUrl"  value="#{hostExample}/jab-xxxsrvsoap/SituacaoEndpointService?wsdl"/>
+        <property name="namespaceUri" value="http://example.com.br/santanderservico"/>
+        <property name="serviceName" value="exampleServiceImplService"/>
+        <property name="portName" value="exampleServiceImplPort"/> 
+        <property name="lookupServiceOnStartup" value="false"/>
+    </bean>
+    
+    <jee:jndi-lookup id="hostExample" jndi-name="url/LOCAL" /> 
+    
+</beans>
